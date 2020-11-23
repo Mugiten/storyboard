@@ -1,0 +1,144 @@
+<h1>Storyboard</h1>
+<p>Welcome to Storyboard</p>
+<div id= "delete-load">
+    {{#each myArray}}
+    <div id="wrapper-{{sceneid}}">
+        <h2>{{sceneid}}</h2>
+        <h2 class="display-title">{{title}}</h2>
+        <p class="display-body">Body: {{body}} </p>
+        <p class="display-location">Location: {{location}} </p>
+        <p class="display-characters">Characters: {{tags}} </p>
+        <p class="display-pov">POV: {{pov}}</p>
+
+        <form action="http://localhost:3000/sceneedit" class="hidden" id="form{{sceneid}}">
+            Title: <input type="text" name="title" class="title"><br />
+            Scene-Body: <input type="text" name="body" class="body"><br />
+            Scene-Location: <input type="text" name="location" class="location"><br />
+            Scene-Characters:  <input type="text" name="tags" class="tags"><br />
+            POV:  <input type="text" name="pov" class="pov"><br />
+            <button class = "edit-btn" value={{sceneid}}>Edit</button>
+        </form>
+
+        <button class = "delete-btn" value={{sceneid}}>Delete</button>
+    </div>
+        
+        
+    {{/each}}
+    <div>
+
+        <form action="http://localhost:3000/post-button" method="POST">
+            Title: <input type="text" name="title"><br />
+            Scene-Body: <input type="text" name="body"><br />
+            Scene-Location: <input type="text" name="location"><br />
+            Scene-Characters:  <input type="text" name="tags"><br />
+            POV:  <input type="text" name="pov"><br />
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+
+<script>
+    var buttons = document.querySelectorAll(".delete-btn");
+    var eButtons = document.querySelectorAll(".edit-btn");
+    buttons.forEach(function(element){
+        element.addEventListener("click", function(event){
+            // console.log(event); 
+            
+            var id = event.target.value;
+            
+            console.log("ID: " + id);
+            fetch("http://localhost:3000/scene/" + id, {
+                method: "DELETE"
+            })
+            
+            .then((res) => {
+                return res.json();
+            })
+            .then((json) => {
+                const wrapper = document.querySelector(`#wrapper-${json.sceneid}`);
+                wrapper.remove();
+            });
+            
+            /*
+            .then(() => {
+                window.location.reload(true);
+            });
+            */
+        });
+    });
+
+    eButtons.forEach(function(element){
+        console.log(element);
+        element.addEventListener("click", (event) => {
+            event.preventDefault();
+            console.log("ID: " +  event.target.value);
+            console.log(event);
+            var id = parseInt(event.target.value); 
+            var ptitle = document.querySelector(`#form${id} .title`).value;
+            var pbody = document.querySelector(`#form${id} .body`).value;
+            var plocation = document.querySelector(`#form${id} .location`).value;
+            var ptags = document.querySelector(`#form${id} .tags`).value.split(",");
+            var ppov = document.querySelector(`#form${id} .pov`).value;
+
+            var putarray = {
+                sceneid: id,
+                title: ptitle,
+                body: pbody,
+                location: plocation,
+                tags: ptags,
+                pov: ppov,
+            }
+
+
+
+            fetch("http://localhost:3000/sceneedit/" + id, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json",},
+                body: JSON.stringify(putarray),
+            })
+            .then((res) => {
+                console.log(res);
+                return res.json();
+            }).then((json) => {
+                const wrapper = document.querySelector(`#wrapper-${json.sceneid}`);
+                if (wrapper == null) {
+                    console.log(`wrapper for id: ${json.sceneid} does not exist`);
+                    return;
+                }
+                // body, location, characters, pov
+                const title = wrapper.querySelector('.display-title');
+                const body = wrapper.querySelector('.display-body');
+                const location = wrapper.querySelector('.display-location');
+                const characters = wrapper.querySelector('.display-characters');
+                const pov = wrapper.querySelector('.display-pov');
+
+                var emptyStringCheck = (strng) => {
+                    if(strng == null || strng == ""){
+                        strng = "Please enter more information."
+                        console.log("strng: " + strng);
+                    }
+                    return strng; 
+                }
+
+                emptyStringCheck(json.title);
+                console.log("json.title: " + json.title);
+                //Console.log(json.title);
+
+                title.textContent = emptyStringCheck(json.title);
+                body.textContent = `Body: ` + emptyStringCheck(json.body);
+                location.textContent = 'Location: ' + emptyStringCheck(json.location);
+                characters.textContent = `Characters: ` + emptyStringCheck(json.tags);
+                pov.textContent = `POV: ` + emptyStringCheck(json.pov);
+                
+            });
+        });
+        
+        var emptyStringCheck = (strng) => {
+            if(strng == null || strng == ""){
+                strng = "Please enter more information."
+            }
+        }
+        
+    });
+    
+</script>
