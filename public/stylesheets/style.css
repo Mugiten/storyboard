@@ -1,18 +1,86 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.sticky{
+  overflow:scroll;
+  padding:3em;
+  text-decoration:none;
+  color:#000;
+  background:#ffc;
+  display:block;
+  height:50em;
+  width:50em;
+  margin:1em;
 }
 
 a {
   color: #00B7FF;
 }
 
-.delete-btn, .edit-btn{
-  
+.expand-btn{
+  position: fixed;
+  text-align: right;
+  top: 8em;
+  right: 4em;
+  z-index: 1000;
 }
 
 .hidden{
+  visibility: hidden;
+}
+
+body{
+  font-family:arial,sans-serif;
+  font-size:100%;
+  margin:3em;
+  background:#666;
+  color:#fff;
+}
+
+.submit-list, .edit-list {
+  background: rgba(#fff, 0.7);
+  position: fixed;
+  top: 10em;
+  right: 4em;
+  z-index: 1000;
+  text-align: right;
+  padding: 1em;
+  border-radius: 5px;
+  display: none;
   
 }
 
-#title, #body, #location, #pov, #tags{}
+.visible{
+  display: block;
+}
+
+.delete-btn{
+  float: right;
+}
+
+.text-pos{
+  background: rgba(#fff, 0.7);
+  position: fixed;
+  top: 10em;
+  right: 4em;
+  z-index: 1000;
+  text-align: left;
+  padding: 1em;
+  border-radius: 5px;
+}
+
+.icon{
+  text-align: center;
+}
+
+.card-handle {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: red;
+  user-select: none;
+  cursor: grab;
+}
+
+.card-handle.grabbed {
+  cursor: grabbing;
+}
