@@ -52,7 +52,9 @@ body{
 }
 
 .delete-btn{
-  float: right;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 
 .text-pos{
@@ -81,6 +83,20 @@ body{
   cursor: grab;
 }
 
-.card-handle.grabbed {
+.drag-handle{
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white;
+  user-select: none;
+}
+
+.card-handle.grabbed{
   cursor: grabbing;
+}
+
+.hide {
+  display: none; 
 }

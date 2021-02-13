@@ -3,164 +3,212 @@
 {{#if character_add_error}}
 <p>{{character_add_error}}</p>
 {{/if}}
-<div class="d-flex flex-row">
-    {{#each myArray}}
-    <div id="wrapper-{{sceneid}}" class="sticky card text-white bg-dark mb-3" style="width: 25rem;">
-        <div class="border-dark mb-3 col-sm">
-            <button class = "delete-btn fas fa-window-close btn btn-outline-secondary" value={{sceneid}}></button>
-            <h2>{{sceneid}}</h2>
-            <h3 class="display-title card-title">{{title}}</h3>
-            <p class="display-body card-text editable">Body: {{body}} </p>
-            <p class="display-location card-text">Location: {{location}} </p>
-            <p class="display-character card-text">Characters: <ul>{{#each characters}}<li id="remove-{{characterSceneId}}">{{name}} <button value="{{characterSceneId}}" class="remove-btn btn btn-outline-secondary">{{characterSceneId}} Remove</button></li>{{/each}}</p> 
-            <p class="display-pov card-text">POV: {{pov}}</p>
-        
+<h1>{{storyboardid}}</h1>
+<div id="post-load">
+    <div class="d-flex flex-row flex-wrap">
+        {{#each myArray}}
+        <div id="wrapper-{{sceneid}}" class="sticky card text-white bg-dark mb-3" style="width: 25rem;">
+            <div class="drag-handle"></div>
+            <div class="border-dark mb-3 col-sm">
+                <button class = "delete-btn fas fa-window-close btn btn-outline-secondary" value={{sceneid}}></button>
+                <h1>{{storyboardid}}</h1>
+                <h2 class="display-orderid">{{orderid}}</h2>
+                <h3 class="display-title card-title">{{title}}</h3>
+                <p class="display-body card-text editable">Body: {{body}} </p>
+                <p class="display-location card-text">Location: {{location}} </p>
+                <p class="display-character card-text">Characters: <ul>{{#each characters}}<li id="remove-{{characterSceneId}}">{{name}} <button value="{{characterSceneId}}" class="remove-btn btn btn-outline-secondary">{{characterSceneId}} Remove</button></li>{{/each}}</p> 
+                <p class="display-pov card-text">POV: {{pov}}</p>
+            
 
-            <form action="http://localhost:3000/sceneedit" id="form{{sceneid}}">
-                <div>
-                    Title: <input type="text" name="title" class="title"><br />
-                    Scene-Body: <input type="text" name="body" class="body"><br />
-                    Scene-Location: <input type="text" name="location" class="location"><br />
-                    POV:  <input type="text" name="pov" class="pov"><br />
-                        {{!-- Characters: <label for="characters" name="selectname">Characters in the Scene</label><br />
-                        <select name="characters">
-                            {{#each ../cArray}}
-                            <option value={{characterid}} name="cname">{{name}}</option>
-                            {{/each}}
-                        </select>
-                        <button class="add-btn" value={{sceneid}} >Add</button> --}}
+                <form action="http://localhost:3000/sceneedit" id="form{{sceneid}}">
+                    <div>
+                        Order Id: <input type="number" name="orderid" class="orderid"><br />
+                        Title: <input type="text" name="title" class="title"><br />
+                       {{!-- Scene-Body: <input id="exampleFormControlTextarea1" type="text" name="body" class="body form-control" rows="3"> --}}
+                            <div class="form-group">
+                                <label for="exampleFormControlTextarea1">Scene Body</label>
+                                <textarea class="form-control body" id="exampleFormControlTextarea1" rows="3" name="body"></textarea>
+                            </div>
                         <br />
-                    <button class = "edit-btn btn btn-outline-secondary" value={{sceneid}}>Edit</button>
-                </div>
-            </form>
+                        Scene-Location: <input type="text" name="location" class="location"><br />
+                        POV:  <input type="text" name="pov" class="pov"><br />
+                        <input type="text" name="storyboardid" value={{../storyboardid}} class="hidden storyboardid" readonly> <br />
+                            <br />
+                        <button class = "edit-btn btn btn-outline-secondary" value={{sceneid}}>Edit</button>
+                    </div>
+                </form>
 
-            <form action= "http://localhost:3000/add-character" method="POST">
-                Characters: <label for="characters" name="selectname">Characters in the Scene</label><br />
-                <input type="text" name="id" value={{sceneid}} class="hidden" readonly> <br />
-                <select name="characters">
-                    {{#each ../cArray}}
-                    <option value="{{characterid}}" name="cname">{{name}}</option>
-                    {{/each}}
-                </select>
-                <button class="add-btn btn btn-outline-secondary" type="submit" value="Submit" >Add</button>
-            </form>
-
-                {{!-- Characters: <label for="characters" name="selectname">Characters in the Scene</label><br />
-                <input type="text" name="id" value={{sceneid}} class="hidden" readonly> <br />
-                <select name="characters">
-                    {{#each ../cArray}}
-                    <option value="{{characterid}}" name="cname">{{name}}</option>
-                    {{/each}}
-                </select>
-                <button class="remove-btn" value={{sceneid}}>Remove</button>
-
-            <button class = "delete-btn" value={{sceneid}}>Delete</button> --}}
-
-            {{!-- Characters: <label for="characters" name="selectname">Characters in the Scene</label><br />
-                <input type="text" name="id" value="{{character_scene_id}}" class="hidden" readonly> <br />
-                    {{#each ../rArray}}add
-                    <p value="{{character_scene_id}}" name="cname">{{name}}</option> <button class="remove-btn" value={{character_scene_id}}>Remove</button><br />
-                    {{/each}} --}}
-        </div>
-        <div class="card-handle"></div>
-                
-    </div>
+                <form action= "http://localhost:3000/add-character" method="POST">
+                    Characters: <label for="characters" name="selectname">Characters in the Scene</label><br />
+                    <input type="text" name="storyboardid" value={{../storyboardid}} class="hidden" readonly> <br />
+                    <input type="text" name="id" value={{sceneid}} class="hidden" readonly> <br />
+                    {{!-- <input type="text" name="id" value={{storyboardid}} class="hidden" readonly> <br /> --}}
         
-        
-    {{/each}}
-    <button class="expand-btn far fa-plus-square btn btn-outline-dark" onclick="clickfunc()">
-    </button>
-    <div class="submit-list">
-        <h2 id="above">Submit Form</h2>
-        <div>
-            <form action="http://localhost:3000/post-button" method="POST" id="post-submit">
-                Title: <input type="text" name="title" class="title"><br />
-                Scene-Body: <input type="text" name="body" class="body"><br />
-                Scene-Location: <input type="text" name="location" class="location"><br />
-                POV:  <input type="text" name="pov" class="pov"><br />
-                Characters: <label for="characters" name="selectname">Characters in the Scene2</label><br />
-                    <select name="characters" class="characters">
-                        {{#each cArray}}
-                        <option value={{characterid}} name="cname"> {{name}}</option>
+                    <select name="characters">
+                        {{#each ../cArray}}
+                        <option value="{{characterid}}" name="cname">{{name}}</option>
                         {{/each}}
                     </select>
-                <input type="submit" value="Submit" id="post-button" class="btn btn-outline-dark">
-            </form>
+                    <button class="add-btn btn btn-outline-secondary" type="submit" value="Submit" >Add</button>
+                </form>
+            </div>
+            <div class="card-handle"></div>
+                    
         </div>
+            
+            
+        {{/each}}
+        <button class="expand-btn far fa-plus-square btn btn-outline-dark" onclick="clickfunc()">
+        </button>
+        <div class="submit-list">
+            <h2 id="above">Submit Form</h2>
+            <div>
+                <form action="http://localhost:3000/post-button" method="POST" id="post-submit">
+                    Order Id: <input type="number" name="orderid" class="orderid"><br />
+                    Title: <input type="text" name="title" class="title"><br />
+                    {{!-- Scene-Body: <input type="text" name="body" class="body"><br /> --}}
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Scene Body</label>
+                        <textarea class="form-control body" id="exampleFormControlTextarea1" rows="3" name="body"></textarea>
+                    </div>
+                    Scene-Location: <input type="text" name="location" class="location"><br />
+                    POV:  <input type="text" name="pov" class="pov"><br />
+                    {{!-- <div class="btn-group">
+                        <input type="text" name="cname" placeholder="Select Characters">
+                        <button class="fas fa-sort-down"></button>
+                        <ul class="hidden">
+                            {{#each cArray}}
+                                <li value={{characterid}}>{{name}}</li>
+                            {{/each}}
+                        </ul>
+                    </div> --}}
+                    Characters: <label for="characters" name="selectname">Characters in the Scene</label><br />
+                        <select name="characters" class="characters">
+                            <option value="">Please choose a character</option>
+                            {{#each cArray}}
+                            <option value={{characterid}} name="cname"> {{name}}</option>
+                            {{/each}}
+                        </select>
+                        <br />
+                        <input type="text" name="storyboardid" value={{storyboardid}} class="hidden storyboardid" readonly> <br />
+                    <input type="submit" value="Submit" id="post-button" class="btn btn-outline-dark">
+                </form>
+            </div>
 
 
-        <h2>Character Creation</h2><br />
-        <div>
-            <form action="http://localhost:3000/post-character" method="POST">
-                Character Name: <input type="text" name="cname"><br />
-                Age: <input type="number" name="age"><br />
-                Sex: <input type="text" name="sex"><br />
-                Relationship: <input type="text" name="relationship"><br />
-                Abilities: <input type="text" name="abilities"><br />
-                History: <input type="text" name="history"><br />
-            <input type="submit" value="Submit" class="btn btn-outline-dark">
-            </form>
+            <h2>Character Creation</h2><br />
+            <div>
+                <form action="http://localhost:3000/post-character" method="POST">
+                    Character Name: <input type="text" name="cname"><br />
+                    Age: <input type="number" name="age"><br />
+                    Sex: <input type="text" name="sex"><br />
+                    Relationship: <input type="text" name="relationship"><br />
+                    Abilities: <input type="text" name="abilities"><br />
+                    History: <input type="text" name="history"><br />
+                    <input type="text" name="storyboardid" value={{storyboardid}} class="hidden storyboardid" readonly> <br />
+                <input type="submit" value="Submit" class="btn btn-outline-dark">
+                </form>
+            </div>
         </div>
+
+        <div id="msgid"></div>
+        <div>TESTING</div>
     </div>
-
-    <div id="msgid"></div>
-    <div>TESTING</div>
 </div>
 
 
 
 
 <script>
-    var buttons = document.querySelectorAll(".delete-btn");
-    var eButtons = document.querySelectorAll(".edit-btn");
+    //var buttons = document.querySelectorAll(".delete-btn");
+    //var eButtons = document.querySelectorAll(".edit-btn");
     //var aButtons = document.querySelectorAll(".add-btn");
-    var rButtons = document.querySelectorAll(".remove-btn");
-    var pButton = document.getElementById("post-button");
+    //var rButtons = document.querySelectorAll(".remove-btn");
+    //var pButton = document.getElementById("post-button");
 
-   /* 
-    pButton.addEventListener("click", function(event){
+   
+    $(document).on("click", "#post-button", function(event){
         event.preventDefault();
+        var ptitle = document.querySelector(`#post-submit .title`).value;
+        var porderid = document.querySelector(`#post-submit .orderid`).value;
+        var pbody = document.querySelector(`#post-submit .body`).value;
+        var plocation = document.querySelector(`#post-submit .location`).value;
+        var ppov = document.querySelector(`#post-submit .pov`).value;
+        var pcharacter = document.querySelector(`#post-submit .characters`).value;
+        var pstoryboardid = document.querySelector(`#post-submit .storyboardid`).value;
+        console.log("test: " + pstoryboardid)
 
-            //var id = parseInt(event.target.value); 
-            var ptitle = document.querySelector(`#post-submit .title`).value;
-            var pbody = document.querySelector(`#post-submit .body`).value;
-            var plocation = document.querySelector(`#post-submit .location`).value;
-            var ppov = document.querySelector(`#post-submit .pov`).value;
-            var pcharacter = document.querySelector(`#post-submit .characters`).value;
 
-
-            var putarray = {
-                title: ptitle,
-                body: pbody,
-                location: plocation,
-                pov: ppov,
-                characters: pcharacter,
-            }
+        var putarray = {
+            title: ptitle,
+            orderid: porderid,
+            body: pbody,
+            location: plocation,
+            pov: ppov,
+            characters: pcharacter,
+            storyboardid: pstoryboardid, 
+        }
         
         fetch("http://localhost:3000/post-button", {
             method: "POST",
             headers: {"Content-Type": "application/json",},
             body: JSON.stringify(putarray),
         }).then((res) => {
-            //alert("This is a test.");
-            return res.json();
-        }).then((json) => {
-            var place = document.getElementById("above");
-            place.insertAdjacentHTML('beforebegin', `<div id="wrapper-${json.sceneid}"><h2>${json.sceneid}</h2><h2 class="display-title">${ptitle}</h2><p class="display-body">Body: ${pbody} </p><p class="display-location">Location: ${plocation} </p><p class="display-character">Characters: <ul>{{#each characters}}<li id="remove-{{characterSceneId}}">{{name}} <button value="{{characterSceneId}}" class="remove-btn">{{characterSceneId}} Remove</button></li>{{/each}}</p> <p class="display-pov">POV: {{pov}}</p><form action="http://localhost:3000/sceneedit" id="form{{sceneid}}">Title: <input type="text" name="title" class="title"><br />Scene-Body: <input type="text" name="body" class="body"><br />Scene-Location: <input type="text" name="location" class="location"><br />POV:  <input type="text" name="pov" class="pov"><br />{{!-- Characters: <label for="characters" name="selectname">Characters in the Scene</label><br /><select name="characters">{{#each ../cArray}}<option value={{characterid}} name="cname">{{name}}</option>{{/each}}</select><button class="add-btn" value=${json.sceneid}  >Add</button> --}}<br /><button class = "edit-btn" value=${json.sceneid} >Edit</button></form><form action= "http://localhost:3000/add-character" method="POST">Characters: <label for="characters" name="selectname">Characters in the Scene</label><br /><input type="text" name="id" value=${json.sceneid} class="hidden" readonly> <br /><select name="characters">{{#each ../cArray}}<option value="{{characterid}}" name="cname">{{name}}</option>{{/each}}</select><button class="add-btn" type="submit" value="Submit" >Add</button></form>{{!-- Characters: <label for="characters" name="selectname">Characters in the Scene</label><br /><input type="text" name="id" value={{sceneid}} class="hidden" readonly> <br /><select name="characters">{{#each ../cArray}}<option value="{{characterid}}" name="cname">{{name}}</option>{{/each}}</select><button class="remove-btn" value={{sceneid}}>Remove</button><button class = "delete-btn" value={{sceneid}}>Delete</button> --}}Characters: <label for="characters" name="selectname">Characters in the Scene</label><br /><input type="text" name="id" value="{{character_scene_id}}" class="hidden" readonly> <br />{{#each ../rArray}}<p value="{{character_scene_id}}" name="cname">{{name}}</option> <button class="remove-btn" value={{character_scene_id}}>Remove</button><br />{{/each}}<button class = "delete-btn" value=${json.sceneid}>Delete</button></div>`);
+            console.log("It reaches here.");
+            $("#post-load").load(`/storyboard/${pstoryboardid} .d-flex.flex-row`);
+        }); 
+    });
+    /*
+    pButton.addEventListener("click", function(event){
+        event.preventDefault();
 
-        });
+        var ptitle = document.querySelector(`#post-submit .title`).value;
+        var porderid = document.querySelector(`#post-submit .orderid`).value;
+        var pbody = document.querySelector(`#post-submit .body`).value;
+        var plocation = document.querySelector(`#post-submit .location`).value;
+        var ppov = document.querySelector(`#post-submit .pov`).value;
+        var pcharacter = document.querySelector(`#post-submit .characters`).value;
+
+
+        var putarray = {
+            title: ptitle,
+            orderid: porderid,
+            body: pbody,
+            location: plocation,
+            pov: ppov,
+            characters: pcharacter,
+        }
+        
+        fetch("http://localhost:3000/post-button", {
+            method: "POST",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify(putarray),
+        }).then((res) => {
+            $(function(){
+                console.log("It reaches here.");
+                $("#post-load").load(`/storyboard .d-flex.flex-row`);
+            });
+        }); 
     });
     */
+    $(document).on("click", ".remove-btn", function(event){
+            var id = event.target.value;
+            const wrapper = document.querySelector(`#remove-${id}`);
+            wrapper.remove();
+            
+            console.log("ID: " + id);
+            fetch("http://localhost:3000/remove-char/" + id, {
+                method: "DELETE"
+            })
+    });
 
+    /*
     rButtons.forEach(function(element){
         element.addEventListener("click", function(event){
-            // console.log(event); 
             
             var id = event.target.value;
             const wrapper = document.querySelector(`#remove-${id}`);
             wrapper.remove();
-            //const wrapper = document.querySelector(`#wrapper-${id}`);
-            //wrapper.remove();
             
             console.log("ID: " + id);
             fetch("http://localhost:3000/remove-char/" + id, {
@@ -168,10 +216,21 @@
             })
         });
     });
+    */
 
+    $(document).on("click", ".delete-btn", function(event){
+        var id = event.target.value;
+        const wrapper = document.querySelector(`#wrapper-${id}`);
+        wrapper.remove();
+        
+        console.log("ID: " + id);
+        fetch("http://localhost:3000/scene/" + id, {
+            method: "DELETE"
+        })
+    });
+    /*
     buttons.forEach(function(element){
         element.addEventListener("click", function(event){
-            // console.log(event); 
             
             var id = event.target.value;
             const wrapper = document.querySelector(`#wrapper-${id}`);
@@ -183,7 +242,68 @@
             })
         });
     });
+    */
 
+    $(document).on("click", ".edit-btn", function(event){
+        event.preventDefault();
+        console.log("ID: " +  event.target.value);
+        console.log(event);
+        var id = parseInt(event.target.value); 
+        var porderid = document.querySelector(`#form${id} .orderid`).value;
+        var ptitle = document.querySelector(`#form${id} .title`).value;
+        var pbody = document.querySelector(`#form${id} .body`).value;
+        var plocation = document.querySelector(`#form${id} .location`).value;
+        var ppov = document.querySelector(`#form${id} .pov`).value;
+        var pstoryboardid = document.querySelector(`#form${id} .storyboardid`).value;
+
+        var putarray = {
+            sceneid: id,
+            orderid: porderid, 
+            title: ptitle,
+            body: pbody,
+            location: plocation,
+            pov: ppov,
+        }
+
+        const wrapper = document.querySelector(`#wrapper-${id}`);
+        if (wrapper == null) {
+            console.log(`wrapper for id: ${id} does not exist`);
+            return;
+        }
+
+        // body, location, characters, pov
+        const title = wrapper.querySelector('.display-title');
+        const orderid = wrapper.querySelector('.display-orderid');
+        const body = wrapper.querySelector('.display-body');
+        const location = wrapper.querySelector('.display-location');
+        const characters = wrapper.querySelector('.display-characters');
+        const pov = wrapper.querySelector('.display-pov');
+
+
+        var emptyStringCheck = (strng) => {
+            if(strng == null || strng == ""){
+                strng = "Please enter more information.";
+                console.log("strng: " + strng);
+            }
+            return strng; 
+        }
+
+        orderid.textContent = emptyStringCheck(porderid.toString());
+        title.textContent = emptyStringCheck(ptitle);
+        body.textContent = `Body: ` + emptyStringCheck(pbody);
+        location.textContent = 'Location: ' + emptyStringCheck(plocation);
+        pov.textContent = `POV: ` + emptyStringCheck(ppov);
+
+        $("#post-load").load(`/storyboard/${pstoryboardid} .d-flex.flex-row`);
+
+        fetch("http://localhost:3000/sceneedit/" + id, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify(putarray),
+        });
+    });
+
+    /*
     eButtons.forEach(function(element){
         console.log(element);
         element.addEventListener("click", (event) => {
@@ -191,6 +311,7 @@
             console.log("ID: " +  event.target.value);
             console.log(event);
             var id = parseInt(event.target.value); 
+            var porderid = document.querySelector(`#form${id} .orderid`).value;
             var ptitle = document.querySelector(`#form${id} .title`).value;
             var pbody = document.querySelector(`#form${id} .body`).value;
             var plocation = document.querySelector(`#form${id} .location`).value;
@@ -198,6 +319,7 @@
 
             var putarray = {
                 sceneid: id,
+                orderid: porderid, 
                 title: ptitle,
                 body: pbody,
                 location: plocation,
@@ -212,6 +334,7 @@
 
             // body, location, characters, pov
             const title = wrapper.querySelector('.display-title');
+            const orderid = wrapper.querySelector('.display-orderid');
             const body = wrapper.querySelector('.display-body');
             const location = wrapper.querySelector('.display-location');
             const characters = wrapper.querySelector('.display-characters');
@@ -226,6 +349,7 @@
                 return strng; 
             }
 
+            orderid.textContent = emptyStringCheck(porderid.toString());
             title.textContent = emptyStringCheck(ptitle);
             body.textContent = `Body: ` + emptyStringCheck(pbody);
             location.textContent = 'Location: ' + emptyStringCheck(plocation);
@@ -237,22 +361,8 @@
                 body: JSON.stringify(putarray),
             });
         });
-        /*
-        aButtons.forEach(function(element){
-            element.addEventListener("click", (event) =>{
-                event.preventDefault();
-                var id = parseInt(event.target.value);
-                console.log("aButton ID: " + id);
-                //var charid = 
-                fetch("http://localhost:3000/add-character/" + id, {
-                    method: "PUT",
-                    headers: {"Content-Type": "application/json",},
-                    body: JSON.stringify(id),
-                });
-            });
-        });
-        */
     });
+    */
 
     function clickfunc(){
             var element = document.querySelector(".submit-list");
