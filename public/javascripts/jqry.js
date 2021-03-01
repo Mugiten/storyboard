@@ -103,12 +103,18 @@ $(function() {
 
     $("#create-btn").on("click", function(event){
         $(".hide").show();
+        $("#post-load").hide();
         $("#board").hide();
     });
 
     $("#close").on("click", function(event){
         $(".hide").hide();
+        $("#post-load").show();
         $("#board").show();
+    });
+
+    $(document).ready(function() {
+        $('.js-basic-single').select2();
     });
 
 });

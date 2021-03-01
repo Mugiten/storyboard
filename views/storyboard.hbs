@@ -7,8 +7,23 @@
 <div id="post-load">
     <div class="d-flex flex-row flex-wrap">
         {{#each myArray}}
-        <div id="wrapper-{{sceneid}}" class="sticky card text-white bg-dark mb-3" style="width: 25rem;">
-            <div class="drag-handle"></div>
+        {{!-- <div id="wrapper-{{sceneid}}" class="sticky card text-white bg-dark mb-3" style="width: 25rem;"> --}}
+            <div class="card mb-3" id="wrapper-{{sceneid}}" style="min-width: 540px; max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <h1><center>{{orderid}}</center></h1>
+                        <button class = "delete-btn fas fa-window-close btn btn-outline-secondary" value={{sceneid}}></button>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{title}}</h5>
+                            <p class="card-text">{{body}}</p>
+                            <p class="card-text"><small class="text-muted">POV: {{pov}}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{!-- <div class="drag-handle"></div>
             <div class="border-dark mb-3 col-sm">
                 <button class = "delete-btn fas fa-window-close btn btn-outline-secondary" value={{sceneid}}></button>
                 <h1>{{storyboardid}}</h1>
@@ -24,7 +39,6 @@
                     <div>
                         Order Id: <input type="number" name="orderid" class="orderid"><br />
                         Title: <input type="text" name="title" class="title"><br />
-                       {{!-- Scene-Body: <input id="exampleFormControlTextarea1" type="text" name="body" class="body form-control" rows="3"> --}}
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">Scene Body</label>
                                 <textarea class="form-control body" id="exampleFormControlTextarea1" rows="3" name="body"></textarea>
@@ -42,7 +56,6 @@
                     Characters: <label for="characters" name="selectname">Characters in the Scene</label><br />
                     <input type="text" name="storyboardid" value={{../storyboardid}} class="hidden" readonly> <br />
                     <input type="text" name="id" value={{sceneid}} class="hidden" readonly> <br />
-                    {{!-- <input type="text" name="id" value={{storyboardid}} class="hidden" readonly> <br /> --}}
         
                     <select name="characters">
                         {{#each ../cArray}}
@@ -52,39 +65,31 @@
                     <button class="add-btn btn btn-outline-secondary" type="submit" value="Submit" >Add</button>
                 </form>
             </div>
-            <div class="card-handle"></div>
+            <div class="card-handle"></div> --}}
                     
-        </div>
+        {{!-- </div> --}}
             
             
         {{/each}}
+        <button class="far fa-plus-square fa-10x" id="create-btn"></button>
+        
         <button class="expand-btn far fa-plus-square btn btn-outline-dark" onclick="clickfunc()">
         </button>
-        <div class="submit-list">
+        {{!-- <div class="submit-list">
             <h2 id="above">Submit Form</h2>
             <div>
                 <form action="http://localhost:3000/post-button" method="POST" id="post-submit">
                     Order Id: <input type="number" name="orderid" class="orderid"><br />
                     Title: <input type="text" name="title" class="title"><br />
-                    {{!-- Scene-Body: <input type="text" name="body" class="body"><br /> --}}
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Scene Body</label>
                         <textarea class="form-control body" id="exampleFormControlTextarea1" rows="3" name="body"></textarea>
                     </div>
                     Scene-Location: <input type="text" name="location" class="location"><br />
                     POV:  <input type="text" name="pov" class="pov"><br />
-                    {{!-- <div class="btn-group">
-                        <input type="text" name="cname" placeholder="Select Characters">
-                        <button class="fas fa-sort-down"></button>
-                        <ul class="hidden">
-                            {{#each cArray}}
-                                <li value={{characterid}}>{{name}}</li>
-                            {{/each}}
-                        </ul>
-                    </div> --}}
+
                     Characters: <label for="characters" name="selectname">Characters in the Scene</label><br />
-                        <select name="characters" class="characters">
-                            <option value="">Please choose a character</option>
+                        <select name="characters" class="characters js-basic-single">
                             {{#each cArray}}
                             <option value={{characterid}} name="cname"> {{name}}</option>
                             {{/each}}
@@ -109,13 +114,37 @@
                 <input type="submit" value="Submit" class="btn btn-outline-dark">
                 </form>
             </div>
-        </div>
+        </div> --}}
 
         <div id="msgid"></div>
         <div>TESTING</div>
     </div>
 </div>
 
+<div class="hide">
+        <button class="fas fa-window-close" id="close"></button>
+        <form action="http://localhost:3000/post-button" method="POST" id="post-submit">
+            <div class="form-row">
+                Order Id: <input type="number" name="orderid" class="orderid"><br />
+                Title: <input type="text" name="title" class="title"><br />
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Scene Body</label>
+                        <textarea class="form-control body" id="exampleFormControlTextarea1" rows="3" name="body"></textarea>
+                    </div>
+                    Scene-Location: <input type="text" name="location" class="location"><br />
+                    POV:  <input type="text" name="pov" class="pov"><br />
+
+                    Characters: <label for="characters" name="selectname">Characters in the Scene</label><br />
+                        <select name="characters" class="characters js-basic-single">
+                            {{#each cArray}}
+                            <option value={{characterid}} name="cname"> {{name}}</option>
+                            {{/each}}
+                        </select>
+                        <br />
+                        <input type="text" name="storyboardid" value={{storyboardid}} class="hidden storyboardid" readonly> <br />
+            <input type="submit" value="Submit" class="btn btn-outline-dark">
+        </form>
+    </div>
 
 
 

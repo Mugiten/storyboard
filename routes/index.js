@@ -15,7 +15,6 @@ let db = new sqlite3.Database(dbPath, (err) => {
   if (err){
     return console.error(err.message);
   }
-  console.log("Connected to the test.db.");
 });
 
 router.use(cookieSession({
