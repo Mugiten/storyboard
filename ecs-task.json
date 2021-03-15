@@ -2,10 +2,10 @@
     "family": "",
     "taskRoleArn": "",
     "executionRoleArn": "",
-    "networkMode": "host",
+    "networkMode": "bridge",
     "containerDefinitions": [
         {
-            "name": "",
+            "name": "storyboard-app",
             "image": "",
             "repositoryCredentials": {
                 "credentialsParameter": ""
@@ -69,7 +69,7 @@
                         "hostPath": "",
                         "containerPath": "",
                         "permissions": [
-                            "read"
+                            "write"
                         ]
                     }
                 ],
@@ -96,7 +96,7 @@
             "dependsOn": [
                 {
                     "containerName": "",
-                    "condition": "COMPLETE"
+                    "condition": "SUCCESS"
                 }
             ],
             "startTimeout": 0,
@@ -129,13 +129,13 @@
             },
             "ulimits": [
                 {
-                    "name": "rtprio",
+                    "name": "locks",
                     "softLimit": 0,
                     "hardLimit": 0
                 }
             ],
             "logConfiguration": {
-                "logDriver": "json-file",
+                "logDriver": "splunk",
                 "options": {
                     "KeyName": ""
                 },
@@ -168,7 +168,7 @@
                 }
             ],
             "firelensConfiguration": {
-                "type": "fluentd",
+                "type": "fluentbit",
                 "options": {
                     "KeyName": ""
                 }
@@ -182,7 +182,7 @@
                 "sourcePath": ""
             },
             "dockerVolumeConfiguration": {
-                "scope": "task",
+                "scope": "shared",
                 "autoprovision": true,
                 "driver": "",
                 "driverOpts": {
@@ -199,7 +199,7 @@
                 "transitEncryptionPort": 0,
                 "authorizationConfig": {
                     "accessPointId": "",
-                    "iam": "ENABLED"
+                    "iam": "DISABLED"
                 }
             },
             "fsxWindowsFileServerVolumeConfiguration": {

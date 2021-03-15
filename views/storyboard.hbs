@@ -123,7 +123,8 @@
 
 <div class="hide">
         <button class="fas fa-window-close" id="close"></button>
-        <form action="http://localhost:3000/post-button" method="POST" id="post-submit">
+        <form action="http://localhost:3000/post-button" method="POST" id="post-submit"></form>
+        {{!-- <form action="https://mugiten-storyboard-dahlq.ondigitalocean.app/post-button" method="POST" id="post-submit"> --}}
             <div class="form-row">
                 Order Id: <input type="number" name="orderid" class="orderid"><br />
                 Title: <input type="text" name="title" class="title"><br />
@@ -177,7 +178,7 @@
             characters: pcharacter,
             storyboardid: pstoryboardid, 
         }
-        
+
         fetch("http://localhost:3000/post-button", {
             method: "POST",
             headers: {"Content-Type": "application/json",},
@@ -185,7 +186,16 @@
         }).then((res) => {
             console.log("It reaches here.");
             $("#post-load").load(`/storyboard/${pstoryboardid} .d-flex.flex-row`);
-        }); 
+        });
+        
+        /*fetch("https://mugiten-storyboard-dahlq.ondigitalocean.app/post-button", {
+            method: "POST",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify(putarray),
+        }).then((res) => {
+            console.log("It reaches here.");
+            $("#post-load").load(`/storyboard/${pstoryboardid} .d-flex.flex-row`);
+        });*/
     });
     /*
     pButton.addEventListener("click", function(event){
@@ -226,9 +236,14 @@
             wrapper.remove();
             
             console.log("ID: " + id);
+
             fetch("http://localhost:3000/remove-char/" + id, {
                 method: "DELETE"
             })
+
+            /*fetch("https://mugiten-storyboard-dahlq.ondigitalocean.app/remove-char/" + id, {
+                method: "DELETE"
+            })*/
     });
 
     /*
@@ -256,6 +271,9 @@
         fetch("http://localhost:3000/scene/" + id, {
             method: "DELETE"
         })
+        /*fetch("https://mugiten-storyboard-dahlq.ondigitalocean.app/scene/" + id, {
+            method: "DELETE"
+        })*/
     });
     /*
     buttons.forEach(function(element){
@@ -330,6 +348,13 @@
             headers: {"Content-Type": "application/json",},
             body: JSON.stringify(putarray),
         });
+
+        /* fetch("https://mugiten-storyboard-dahlq.ondigitalocean.app/sceneedit/" + id, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify(putarray),
+        });
+        */
     });
 
     /*

@@ -18,7 +18,8 @@
     </div>
     <div class="hide">
         <button class="fas fa-window-close" id="close"></button>
-        <form action="http://localhost:3000/post-storyboard" method="POST">
+        {{!-- <form action="https://mugiten-storyboard-dahlq.ondigitalocean.app/post-storyboard" method="POST"> --}}
+        <form action="http://localhost:3000/post-storyboard" method="POST"></form>
             <div class="form-row">
                 <div class="col-7">
                 <input type="text" class="form-control" placeholder="Name" name="name">
@@ -43,5 +44,9 @@
             fetch("http://localhost:3000/remove-storyboard/" + id, {
                 method: "DELETE"
             })
+            /*fetch("https://mugiten-storyboard-dahlq.ondigitalocean.app/remove-storyboard/" + id, {
+                method: "DELETE"
+            })
+            */
     });
 </script>

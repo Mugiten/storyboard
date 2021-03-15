@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-
+                        
 const GOOGLE_CLIENT_ID = "164805079420-8527v7i39t6f8ud037jtithrgme1s59k.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "8cNs0PKSKXjnHJMPv36vTpET";
 const cookieSession = require('cookie-session');
@@ -35,6 +35,7 @@ passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: "http://localhost:3000/auth/google/callback"
+    // callbackURL: "https://mugiten-storyboard-dahlq.ondigitalocean.app/auth/google/callback"
   },
   (accessToken, refreshToken, profile, cb) => {
     console.log("Profile ID is: " + profile.displayName);
