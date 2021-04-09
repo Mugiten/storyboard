@@ -1,0 +1,64 @@
+<h1 class="display-4">Character Selection</h1>
+<div id="storyboard-select">
+    <div id="board" class="position-relative">
+        <div class="d-flex flex-row flex-wrap">
+            {{#each array}}
+                <div class="card" style="width: 18rem;" id="remove-{{characterid}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{name}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{age}}</h6>
+                        {{!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> --}}
+                        <a href="/characters/{{characterid}}" class="card-link">Open</a>
+                        <button class="btn btn-outline-secondary remove-btn" value="{{characterid}}">Delete</button>
+                    </div>
+                </div>
+            {{/each}}
+            <button class="far fa-plus-square fa-10x" id="create-btn"></button>
+        </div>
+    </div>
+    <div class="hide">
+        <button class="fas fa-window-close" id="close"></button>
+        {{!-- <form action="https://mugiten-storyboard-dahlq.ondigitalocean.app/post-storyboard" method="POST"> --}}
+        <form action="http://localhost:3000/post-character" method="POST">
+            <div class="form-row">
+                <div class="col-7">
+                <input type="text" class="form-control" placeholder="Character Name" name="cname">
+                </div>
+                <div class="col">
+                <input type="number" class="form-control" placeholder="Age" name="age">
+                </div>
+                <div class="col">
+                <input type="text" class="form-control" placeholder="Sex" name="sex">
+                </div>
+                <div class="col">
+                <input type="text" class="form-control" placeholder="Relationship" name="relationship">
+                </div>
+                <div class="col">
+                <input type="text" class="form-control" placeholder="Abilities" name="abilities">
+                </div>
+                <div class="col">
+                <input type="text" class="form-control" placeholder="History" name="history">
+                </div>
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+
+<script>
+     $(document).on("click", ".remove-btn", function(event){
+            var id = event.target.value;
+            const wrapper = document.querySelector(`#remove-${id}`);
+            wrapper.remove();
+            
+            console.log("ID: " + id);
+
+            fetch("http://localhost:3000/remove-character/" + id, {
+                method: "DELETE"
+            })
+
+            /*fetch("https://mugiten-storyboard-dahlq.ondigitalocean.app/remove-character/" + id, {
+                method: "DELETE"
+            })*/
+    });
+</script>

@@ -19,16 +19,17 @@
     <div class="hide">
         <button class="fas fa-window-close" id="close"></button>
         {{!-- <form action="https://mugiten-storyboard-dahlq.ondigitalocean.app/post-storyboard" method="POST"> --}}
-        <form action="http://localhost:3000/post-storyboard" method="POST"></form>
+        <form action="http://localhost:3000/post-storyboard" method="POST">
             <div class="form-row">
                 <div class="col-7">
                 <input type="text" class="form-control" placeholder="Name" name="name">
                 </div>
                 <div class="col">
                 <input type="text" class="form-control" placeholder="Author" name="author">
-                {{!-- <input type="text" name="userid" value={{userid}} class="hidden" readonly> <br /> --}}
+                {{!-- <input type="text" name="userid" value="{{userid}}" class="hidden" readonly> <br /> --}}
+                </div>
             </div>
-            <input type="submit" value="Submit" id="post-button" class="btn btn-outline-dark">
+            <input type="submit" value="Submit">
         </form>
     </div>
 </div>

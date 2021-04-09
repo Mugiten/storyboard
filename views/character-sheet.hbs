@@ -1,0 +1,69 @@
+{{#each array}}
+<div class="form-row" id="character-div-{{characterid}}">
+    <form id="character-form-{{characterid}}">
+        <div class="col-7">
+            <input type = "text" id = "name-{{characterid}}" value = "{{name}}" placeholder="Name">
+        </div>
+        <div class="col">
+            <input type = "text" id = "age-{{characterid}}" value = "{{age}}" placeholder="Age">
+        </div>
+        <div class="col">
+            <input type = "text" id = "sex-{{characterid}}" value = "{{sex}}" placeholder="Sex">
+        </div>
+        <div class="col">
+            <textarea placeholder="Abilities" id="abilities-{{characterid}}">{{abilities}}</textarea>
+        </div>
+        <div class="col">
+            <textarea placeholder="Relationship" id="relationship-{{characterid}}">{{relationship}}</textarea>
+        </div>
+        <div class="col">
+            <textarea placeholder="History" id="history-{{characterid}}">{{history}}</textarea>
+        </div>
+    </form>
+</div>
+<button class="btn btn-success save-btn" id="save-{{characterid}}" value={{characterid}}>Save</button>
+{{/each}}
+
+<script>
+     $(document).on("click", ".save-btn", function(event){
+        event.preventDefault();
+        console.log("ID: " +  event.target.value);
+        console.log(event);
+        var id = parseInt(event.target.value); 
+        var cname = document.querySelector(`#name-${id}`).value;
+        console.log("cname: " + cname);
+        var cage = document.querySelector(`#age-${id}`).value;
+        var csex = document.querySelector(`#sex-${id}`).value;
+        var cabilities = document.querySelector(`#abilities-${id}`.value)
+        var crelationship = document.querySelector(`#relationship-${id}`).value;
+        var chistory = document.querySelector(`#history-${id}`).value;
+
+       
+       
+
+        var putarray = {
+            characterid: id,
+            name: cname, 
+            age: cage,
+            abilities: cabilities,
+            sex: csex,
+            relationship: crelationship,
+            history: chistory,
+        }
+
+        $(`#character-div-${id}`).load(`/characters/${id} #character-form-${id}`);
+
+        fetch("http://localhost:3000/character-edit/" + id, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify(putarray),
+        });
+
+        /* fetch("https://mugiten-storyboard-dahlq.ondigitalocean.app/sceneedit/" + id, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify(putarray),
+        });
+        */
+    });
+</script>

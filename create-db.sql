@@ -20,8 +20,8 @@ CREATE TABLE character(
 	[relationship] TEXT, 
 	[history] TEXT,
 	[abilities] TEXT,
-	[storyboardid] INTEGER NOT NULL,
-	FOREIGN KEY(storyboardid) REFERENCES storyboard(storyboardid)
+	[userid] INTEGER NOT NULL,
+	FOREIGN KEY(userid) REFERENCES users(id)
 );
 
 CREATE TABLE character_scene(

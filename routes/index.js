@@ -40,8 +40,8 @@ passport.use(new GoogleStrategy({
   (accessToken, refreshToken, profile, cb) => {
     console.log("Profile ID is: " + profile.displayName);
     db.get("SELECT * FROM users WHERE profileid=?", [profile.id], function(err, row){
-      console.log("PROFILE ROW: " + row.id);
-      pro = row.id; 
+      // console.log("PROFILE ROW: " + row.id);
+      // pro = row.id; 
       if(err){
         console.error(err.message);
       }
@@ -87,6 +87,11 @@ router.get('/', checkUserLoggedIn ,function(req, res, next) {
     res.render('index', { title: 'Exprooss'});
 });
 
+router.get("/login", function(req, res, next){
+  res.redirect("/auth/google");
+
+});
+
 router.get('/testing', (req, res, next) => {
   res.render('testing');
 });
@@ -129,6 +134,7 @@ router.get("/storyboard_selection/", checkUserLoggedIn, (req, res, next) => {
     });
 });
 
+
 function dbAllPromise(statement, params = []) {
   return new Promise((resolve, reject) => {
     db.all(statement, params, function (error, results) {
@@ -155,7 +161,7 @@ router.get("/storyboard/:id/", checkUserLoggedIn,(req, res, next) => {
     }
     
     Promise.all([
-      dbAllPromise("SELECT * FROM character WHERE storyboardid=?", [req.params.id]),
+      dbAllPromise("SELECT * FROM character WHERE userid=?", [req.user.id]),
       dbAllPromise("SELECT s.sceneid, s.orderid, s.title, s.body, s.location, s.pov, GROUP_CONCAT(cs.character_scene_id) AS character_scene_ids, GROUP_CONCAT(c.name, \"::::\") AS character_names FROM scene s LEFT OUTER JOIN character_scene cs ON s.sceneid = cs.sceneid LEFT OUTER JOIN character c ON cs.characterid = c.characterid WHERE s.storyboardid=? GROUP BY s.sceneid ORDER BY s.orderid", [req.params.id])
     ]).then(function ([characters, scenes]) {
       const lRows = [];
@@ -204,8 +210,18 @@ router.delete("/scene/:id", (req, res, next) => {
   });
 });
 
-router.delete("/remove-character/:id", (req, res, next)=>{
-  db.run("DELETE FROM character_scene WHERE character_scene.sceneid = ? AND character_scene.characterid = ?", [req.body.id, req.body.characters], function(err){
+// router.delete("/remove-character/:id", (req, res, next)=>{
+//   db.run("DELETE FROM character_scene WHERE character_scene.sceneid = ? AND character_scene.characterid = ?", [req.body.id, req.body.characters], function(err){
+//     if(err){
+//       res.status(500).end();
+//       return console.error(err.message);
+//     }
+//     res.json();
+//   });
+// });
+
+router.delete("/remove-char/:id", (req, res, next)=>{
+  db.run("DELETE FROM character_scene WHERE character_scene_id=?", req.params.id, function(err){
     if(err){
       res.status(500).end();
       return console.error(err.message);
@@ -214,8 +230,8 @@ router.delete("/remove-character/:id", (req, res, next)=>{
   });
 });
 
-router.delete("/remove-char/:id", (req, res, next)=>{
-  db.run("DELETE FROM character_scene WHERE character_scene_id=?", req.params.id, function(err){
+router.delete("/remove-character/:id", (req, res, next)=>{
+  db.run("DELETE FROM character WHERE characterid=?", [req.params.id], function(err){
     if(err){
       res.status(500).end();
       return console.error(err.message);
@@ -271,16 +287,48 @@ router.post("/post-storyboard", (req, res, next)=>{
 });
 
 router.post("/post-character", (req, res, next) =>{
-  db.run("INSERT INTO character(name, age, sex, relationship, history, abilities, storyboardid) VALUES(?, ?, ?, ?, ?, ?, ?)", [req.body.cname, req.body.age, req.body.relationship, req.body.sex, req.body.abilities, req.body.history, req.body.storyboardid], function(err){
+  db.run("INSERT INTO character(name, age, sex, relationship, history, abilities, userid) VALUES(?, ?, ?, ?, ?, ?, ?)", [req.body.cname, req.body.age, req.body.sex, req.body.relationship, req.body.history, req.body.abilities, req.user.id], function(err){
     if(err){
       res.status(500).end();
       return console.error(err.message);
     }
     console.log("Character Post!");
     //console.log("SELECT * FROM character");
-    res.redirect("/storyboard/" + req.body.storyboardid);
+    res.redirect("/characters");
   });
 });
+
+router.get("/characters", checkUserLoggedIn, (req, res, next) => {
+  db.all("SELECT * FROM character WHERE userid=?", [req.user.id], function(err, rows){
+    if(err){
+      res.status(500).end();
+      return console.error(err.message);
+    }
+    res.render('character', {array: rows});
+  });
+});
+
+router.get("/characters/:id", checkUserLoggedIn, (req, res, next) => {
+  db.all("SELECT * FROM character WHERE characterid=?", req.params.id, function(err, rows){
+    if(err){
+      res.status(500).end();
+      return console.error(err.message);
+    }
+    res.render('character-sheet', {array: rows});
+  });
+});
+
+router.put("/character-edit/:id", (req, res, next) => {
+  console.log("character-edit id: " + req.body.name);
+  db.run("UPDATE character SET name=?, age=?, sex=?, relationship=?, history=?, abilities=? WHERE characterid=?", [req.body.name, req.body.age, req.body.sex, req.body.relationship, req.body.history, req.body.abilities, req.params.id], function(err){
+    if(err){
+      res.status(500).end();
+      return console.error(err.message);
+    }
+    console.log("success UPDATE!");
+  });
+});
+
 
 
 module.exports = router;
